@@ -2,8 +2,14 @@
 
 int puts_(const char *str)
 {
-    while(*str != '\0')
+    if(str == 0)
     {
+        return EOF;
+    }
+
+
+    while(*str != '\0')
+    {        
         printf("%c", *str);
         str++;
     }
@@ -26,13 +32,13 @@ size_t strlen_(const char *str)
     return len;
 }
 
-char *strchr_(char *str, int ch)
+char *strchr_(const char *str, int ch)
 {
     while(*str != '\0' && *str != ch)
     {
         str++;
     }
-    return str;
+    return (char*) str;
 }
 
 char *strcpy_(char *str1, const char *str2)
@@ -51,24 +57,21 @@ char *strcpy_(char *str1, const char *str2)
 char *strncpy_(char *str1, const char *str2, size_t count)
 {
     char *s = str1;
-    while(*str2 != '\0')
+
+    while(count > 0)
     {
-        if(count > 0)
+        if(*str2 != '\0')
         {
             *s = *str2;
-            s++;
-            count--;
+            str2++;
         }
         else
         {
-           *s = '\0';
+            *s = '\0';
         }
-
-        str2++;
+        count--;
+        s++;
     }
-
-    if(*str2 == '\0')
-        *s = '\0';
 
     return str1;
 }
