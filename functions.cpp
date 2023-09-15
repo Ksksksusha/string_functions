@@ -1,8 +1,10 @@
 #include "text.h"
 
+//---------------------------String--Functions------------------------------------
+
 int puts_(const char *str)
 {
-    if(str == 0)
+    if(str == NULL)
     {
         return EOF;
     }
@@ -10,13 +12,13 @@ int puts_(const char *str)
 
     while(*str != '\0')
     {        
-        printf("%c", *str);
+        putc(*str, stdout);
         str++;
     }
 
     printf("\n");
 
-    return *str;
+    return 0;
 }
 
 size_t strlen_(const char *str)
@@ -41,109 +43,102 @@ char *strchr_(const char *str, int ch)
     return (char*) str;
 }
 
-char *strcpy_(char *str1, const char *str2)
+char *strcpy_(char *dst, const char *src) // src -откуда копируем(str2), dst - куда копируем(str1)
 {
-    char *s = str1;
-    while(*str2 != '\0')
+    char *src_iter = dst;
+    while(*src != '\0')
     {
-        *s = *str2;
-        s++;
-        str2++;
+        *src_iter = *src;
+        src_iter++;
+        src++;
     }
-    *s = '\0';
-    return str1;
+    *src_iter = '\0';
+    return dst;
 }
 
-char *strncpy_(char *str1, const char *str2, size_t count)
+char *strncpy_(char *dst, const char *src, size_t count)
 {
-    char *s = str1;
+    char *src_iter = dst;
 
-    while(count > 0)
+    while(count > 0 && *(src+1) != '\0')
     {
-        if(*str2 != '\0')
-        {
-            *s = *str2;
-            str2++;
-        }
-        else
-        {
-            *s = '\0';
-        }
+        //printf("\n strncpy: we change %c on %c \n \n", *src, *src_iter);
+        *src_iter = *src;
         count--;
-        s++;
+        src_iter++;
+        src++;
     }
 
-    return str1;
+    return dst;
 }
 
-char *strcat_(char *str1, const char *str2)
+char *strcat_(char *dst, const char *src)
 {
-    char *s = str1;
-    while(*s != '\0')
+    char *src_iter = dst;
+    while(*src_iter != '\0')
     {
-        s++;
+        src_iter++;
     }
-    while(*str2 != '\0')
+    while(*src != '\0')
     {
-        *s = *str2;
-        str2++;
-        s++;
+        *src_iter = *src;
+        src++;
+        src_iter++;
     }
-    *s = '\0';
-    return str1;
+    *src_iter = '\0';
+    return dst;
 }
 
-char *strncat_(char *str1, const char *str2, size_t count)
+char *strncat_(char *dst, const char *src, size_t count)
 {
-    char *s = str1;
-    while(*s != '\0')
+    char *src_iter = dst;
+    while(*src_iter != '\0')
     {
-        s++;
+        src_iter++;
     }
-    while(*str2 != '\0' && count > 0)
+    while(*src != '\0' && count > 0)
     {
-        *s = *str2;
-        str2++;
-        s++;
+        *src_iter = *src;
+        src++;
+        src_iter++;
         count--;
     }
-    *s = '\0';
-    return str1;
+    *src_iter = '\0';
+    return dst;
 }
 
 char *fgets_(char *str, int num, FILE *stream)
 {
-    char *s = str;
+    char *str_iter = str;
     char symbol = '\0';
 
     fscanf(stream, "%c", &symbol);
 
-    while(symbol != '\n' && symbol != EOF && (num-1) > 0)
+    while(symbol != '\n' && symbol != EOF && (num) > 0)
     {
         num--;
-        *s = symbol;
-        s++;
-        fscanf(stream, "%c", &symbol);
+        *str_iter = symbol;
+        str_iter++;
+        symbol = fgetc(stream);
     }
-    *s = '\0';
+    *str_iter = '\0';
     return str;
 }
 
-char *strdup_(const char *str)
+char *strdup_(const char *src)// don't forget use free() !!!!
 {
-    char *s = (char*)(calloc(strlen_(str), sizeof(char))); //!!!!!
-    return strcpy_(s, str);
+    char* dst = (char*) calloc(strlen_(src) + 1, sizeof(char));
+    
+    return strcpy_(dst, src);
 }
 
-
-int strcmp_(const char *str1, const char *str2)
+int strcmp_(const char *str1, const char *str2) // str1>str2 -> >0, str1==str2 -> 0
 {
-    return (strlen_(str1) - strlen_(str2));
+    while(*str1 != '\0' && *str2 != '\0' && *str1 == *str2)
+    {
+        str1++;
+        str2++;
+    }
+    return (*str1 - *str2);
 }
-
-/*size_t getline(char **lineptr, size_t *n, FILE *stream)
-{
-    char **line = *lineptr;
-
-}*/
 
