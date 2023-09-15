@@ -37,7 +37,8 @@ void check_strncpy_()
 
 void check_strcat_()
 {
-    char dst[] = "123456";
+    char dst[100] = {};
+    strcpy_(dst, "pamagiti");
     char src[] = "12345";
     printf("%s + %s ", dst, src);
     printf("is %s\n\n", strcat_(dst, src));
@@ -46,7 +47,8 @@ void check_strcat_()
 
 void check_strncat_()
 {
-    char dst[] = "123456";
+    char dst[100] = {};
+    strcpy_(dst, "pamagiti");
     char src[] = "12345";
     printf("%s + %s with count %d ", dst, src, 3);
     printf("is %s\n\n", strncat_(dst, src, 3));
